@@ -50,7 +50,7 @@ if __name__ == '__main__':
             print('email ---->', task.variables['toAddresses'].value)
             for document_name in document_attache:
                 file_path = home + '/outputs/' + document_name
-                email.attachments = [file_path]
+                email.attachments.append(file_path)
 
             result = email.send()
 
