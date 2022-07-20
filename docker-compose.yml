@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  EnviaEmailDeNotificacaoSMTPTask:
+    image: enviaemaildenotificacaosmtp
+    # container_name: EnviaEmailDeNotificacaoSMTPTask
+    hostname: EnviaEmailDeNotificacaoSMTPTask
+    restart: unless-stopped
+    privileged: true
+    cap_add:
+      - ALL
+    devices:
+      - /dev/fuse
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - NODE_ENV=production
+      - TOPIC=EnviaEmailDeNotificacaoSMTPTask
+      - ENG_REST_URL=${CAMUNDA_URL}
+      - ENG_REST_USERNAME=${CAMUNDA_USERNAME}
+      - ENG_REST_PASSWORD=${CAMUNDA_PASSWORD}
+      - MAX_TASK_DURATION=30000
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - MAIL_ACCOUNT=${MAIL_ACCOUNT}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM=${MAIL_FROM}
+    volumes:
+      - ${ACS_DOCS_PATH}/GerenciaContratosDeRPAProcess/outputs:/home/appuser/outputs:ro
+
+networks:
+  default:
+    external: true
+    name: backend
