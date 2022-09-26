@@ -1,4 +1,4 @@
-from worker import worker
+from caworker import Worker
 from time import sleep
 from smtpmail import SMTPClient
 from os.path import expanduser
@@ -6,7 +6,7 @@ import javaobj
 from base64 import b64decode
 import json
 
-worker = worker()
+worker = Worker()
 
 def unserialize(data):
     if data.type_ == 'Object':
