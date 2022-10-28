@@ -35,11 +35,14 @@ if __name__ == '__main__':
         for task in tasks:
             print('Task {} processing.'.format(task.id_))
             email = SMTPClient()
-
             email.toAddresses = unserialize(task.variables['toAddresses']) if 'toAddresses' in task.variables else email.toAddresses
             email.bccAddresses = unserialize(task.variables['bccAddresses']) if 'bccAddresses' in task.variables else email.bccAddresses
             email.ccAddresses = unserialize(task.variables['ccAddresses']) if 'ccAddresses' in task.variables else email.ccAddresses
-            email.htmlMessage = task.variables['htmlMessage'].value if 'htmlMessage' in task.variables else email.htmlMessage
+            
+            htmlMessage = task.variables['htmlMessage'].value if 'htmlMessage' in task.variables else email.htmlMessage
+            if task.variables['htmlMessage'].type_ == 'Json':
+                htmlMessage = json.loads(htmlMessage)["message"]
+            email.htmlMessage = htmlMessage
             email.textMessage = task.variables['textMessage'].value if 'textMessage' in task.variables else email.textMessage
             email.subject = task.variables['subject'].value if 'subject' in task.variables else email.subject
 
