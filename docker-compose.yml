@@ -3,9 +3,8 @@ version: '3.9'
 services:
   EnviaEmailDeNotificacaoSMTPTask:
     image: enviaemaildenotificacaosmtp
-    # container_name: EnviaEmailDeNotificacaoSMTPTask
     hostname: EnviaEmailDeNotificacaoSMTPTask
-    restart: unless-stopped
+    restart: always
     privileged: true
     cap_add:
       - ALL

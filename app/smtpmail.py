@@ -3,10 +3,16 @@ import smtplib
 from email.message import EmailMessage
 import magic
 import mimetypes
+import envconfiguration as config
+
 
 class SMTPClient:
     def __init__(self):
-        self.SMTP_SERVER, self.SMTP_PORT, self.MAIL_ACCOUNT, self.MAIL_PASSWORD, self.MAIL_FROM = self.__load_env()
+        self.SMTP_SERVER = config.SMTP_SERVER
+        self.SMTP_PORT = config.SMTP_PORT
+        self.MAIL_ACCOUNT = config.MAIL_ACCOUNT
+        self.MAIL_PASSWORD = config.MAIL_PASSWORD
+        self.MAIL_FROM = config.MAIL_FROM
         self.toAddresses = []
         self.bccAddresses = []
         self.ccAddresses = []
@@ -15,21 +21,6 @@ class SMTPClient:
         self.htmlMessage = ''
         self.textMessage = ''
         self.attachments = []
-
-    def __load_env(self):
-        if getenv('NODE_ENV') != 'production':
-            from os.path import join, dirname
-            from dotenv import load_dotenv
-            dotenv_path = join(dirname(__file__), 'email.env')
-            load_dotenv(dotenv_path)
-
-        SMTP_SERVER = getenv('SMTP_SERVER')
-        SMTP_PORT = getenv('SMTP_PORT')
-        MAIL_ACCOUNT = getenv('MAIL_ACCOUNT')
-        MAIL_PASSWORD = getenv('MAIL_PASSWORD')
-        MAIL_FROM = getenv('MAIL_FROM')
-
-        return SMTP_SERVER, SMTP_PORT, MAIL_ACCOUNT, MAIL_PASSWORD, MAIL_FROM
 
     def send(self):
         
